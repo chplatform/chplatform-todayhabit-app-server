@@ -1,0 +1,116 @@
+spring:
+  profiles:
+    group:
+      "local": "testdb"
+      "dev":  "testdb"
+      "prod": "proddb"
+
+---
+
+spring:
+  config:
+    activate:
+      on-profile: "testdb"
+  datasource:
+    url: jdbc:mysql://db-av6j1.pub-cdb.ntruss.com/GH-CRM
+    username: bookinghabit
+    password: bookinghabit1234!
+    driver-class-name: com.mysql.cj.jdbc.Driver
+
+  jpa:
+    hibernate:
+      ddl-auto: none
+      naming:
+        physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
+        implicit-strategy: org.hibernate.boot.model.naming.ImplicitNamingStrategyLegacyJpaImpl
+    properties:
+      hibernate:
+        format_sql: true
+server:
+  config:
+    activate:
+      on-profile: "testdb"
+  port: 8000
+  ssl:
+    key-store: classpath:keystore.p12
+    key-store-type: PKCS12
+    key-store-password: bookinghabit1234
+
+
+cloud:
+  aws:
+    credentials:
+      accessKey: 'OxHNTsm3NKUVVleWLPSg'
+      secretKey: 'C7MRkFLJGSEvDQeMx5D5pNc2fj85VaLQiNbw0cA5'
+    s3:
+      bucket: 'goodhabit-crm'
+      endPoint: "https://kr.object.ncloudstorage.com"
+    region:
+      auto: false
+      static: "ap-northeast-2"
+    stack:
+      auto: false
+
+logging.level:
+  org.hibernate.SQL: debug
+  com.amazonaws.util.EC2MetadataUtils: error
+
+project:
+  properties:
+    firebase-create-scoped: "https://www.googleapis.com/auth/firebase.messaging"
+    firebase-multicast-message-size: 500
+      
+---
+
+spring:
+  config:
+    activate:
+      on-profile: "proddb"
+  datasource:
+    url: jdbc:mysql://db-7maf8.pub-cdb.ntruss.com/GH-CRM
+    username: bookinghabit
+    password: bookinghabit1234!
+    driver-class-name: com.mysql.cj.jdbc.Driver
+
+  jpa:
+    hibernate:
+      ddl-auto: none
+      naming:
+        physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
+        implicit-strategy: org.hibernate.boot.model.naming.ImplicitNamingStrategyLegacyJpaImpl
+    properties:
+      hibernate:
+        format_sql: true
+server:
+  config:
+    activate:
+      on-profile: "proddb"
+  port: 443
+  ssl:
+    key-store: classpath:keystore.p12
+    key-store-type: PKCS12
+    key-store-password: bookinghabit1234
+    
+cloud:
+  aws:
+    credentials:
+      accessKey: 'OxHNTsm3NKUVVleWLPSg'
+      secretKey: 'C7MRkFLJGSEvDQeMx5D5pNc2fj85VaLQiNbw0cA5'
+    s3:
+      bucket: 'goodhabit-crm'
+      endPoint: "https://kr.object.ncloudstorage.com"
+    region:
+      auto: false
+      static: "ap-northeast-2"
+    stack:
+      auto: false
+
+logging.level:
+  org.hibernate.SQL: debug
+  com.amazonaws.util.EC2MetadataUtils: error
+
+project:
+  properties:
+    firebase-create-scoped: "https://www.googleapis.com/auth/firebase.messaging"
+    firebase-multicast-message-size: 500
+
