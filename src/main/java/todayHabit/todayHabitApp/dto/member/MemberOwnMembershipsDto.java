@@ -46,11 +46,11 @@ public class MemberOwnMembershipsDto {
         this.weekAttend = memberOwnMembership.getWeekAttend();
         this.registerDate = memberOwnMembership.getRegisterDate();
         this.maxCountClass = memberOwnMembership.getMaxCountClass();
-        this.available = memberOwnMembership.getAvailable();
-        if (this.available != "notUse") {
-            this.holdingStartDay = memberOwnMembership.getHoldingStartDay();
-            this.holdingEndDay = memberOwnMembership.getHoldingEndDay();
-        }
+//        this.available = memberOwnMembership.getAvailable();
+//        if (this.available != "notUse") {
+//            this.holdingStartDay = memberOwnMembership.getHoldingStartDay();
+//            this.holdingEndDay = memberOwnMembership.getHoldingEndDay();
+//        }
         this.membershipClassType = memberOwnMembership.getMembershipClassTypes().stream()
                 .map(membershipClassType -> new MembershipClassTypeDto(membershipClassType))
                 .collect(toList());
@@ -131,7 +131,7 @@ public class MemberOwnMembershipsDto {
         private LocalDate holdEndDay;
         private Long holdTotalPeriod;
         private Long holdUsePeriod;
-
+        private String available;
         private String memo;
 
 		public HoldingInfoDto(HoldingInfo holdingLists) {
@@ -145,6 +145,7 @@ public class MemberOwnMembershipsDto {
 			this.holdTotalPeriod = holdingLists.getHoldTotalPeriod();
 			this.holdUsePeriod = holdingLists.getHoldUsePeriod();
 			this.memo = memo;
+	        this.available = holdingLists.getAvailable();
 		}
 
 

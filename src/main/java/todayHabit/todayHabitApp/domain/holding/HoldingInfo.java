@@ -57,6 +57,24 @@ public class HoldingInfo {
     private Long holdUsePeriod;
 
     private String memo;
+    
+    public String getAvailable() {
+        int compare = this.memberOwnMembership.getEndDay().compareTo(LocalDate.now());
+        LocalDate today = LocalDate.now();
+        
+        // 홀딩권이 있을 경우
+        if(this.getReqUse().equals("Y")) {
+            if (today.compareTo(this.getHoldStartDay()) >= 0 && today.compareTo(this.getHoldEndDay()) <= 0) {
+                return "use"; // 홀딩권 사용중
+            }else if(today.compareTo(this.getHoldEndDay()) > 0){
+            	return "Expired"; //홀딩권 기간 만료
+            }
+        }else { // 홀딩권 미사용
+        	return "notUse";
+        }
+            
+        return "notFound";
+    }
 	
     protected HoldingInfo() {
 
