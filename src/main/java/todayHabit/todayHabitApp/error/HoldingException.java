@@ -6,12 +6,12 @@ import java.time.LocalDate;
 public class HoldingException extends Exception {
     private LocalDate startDay;
     private LocalDate endDay;
-    private Long holdingMembershipId;
+    private Long holdingId;
 
-    public HoldingException(LocalDate startDay, LocalDate endDay, Long holdingMembershipId) {
+    public HoldingException(LocalDate startDay, LocalDate endDay, Long holdingId) {
         this.startDay = startDay;
         this.endDay = endDay;
-        this.holdingMembershipId = holdingMembershipId;
+        this.holdingId = holdingId;
     }
 
     public LocalDate getStartDay() {
@@ -22,8 +22,8 @@ public class HoldingException extends Exception {
         return endDay;
     }
 
-    public Long getHoldingMembershipId() {
-        return holdingMembershipId;
+    public Long getHoldingId() {
+        return holdingId;
     }
 
 }

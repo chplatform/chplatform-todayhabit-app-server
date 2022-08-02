@@ -87,7 +87,7 @@ public class ApiErrorHandler extends Exception {
     @ExceptionHandler(value = HoldingException.class)
     public ResponseEntity<Object> HoldingException(HoldingException e) {
         HttpStatus httpStatus = HttpStatus.INTERNAL_SERVER_ERROR;
-        ApiException apiException = new ApiException("홀딩되어있는 기간입니다." + e.getStartDay()+"-"+e.getEndDay() + "-" + e.getHoldingMembershipId(), httpStatus, LocalDateTime.now());
+        ApiException apiException = new ApiException("홀딩되어있는 기간입니다." + e.getStartDay()+"-"+e.getEndDay() + "-" + e.getHoldingId(), httpStatus, LocalDateTime.now());
         return new ResponseEntity<>(apiException, httpStatus);
     }
 
@@ -189,6 +189,13 @@ public class ApiErrorHandler extends Exception {
     public ResponseEntity<Object> WebHoldingException(WebHoldingException e) {
         HttpStatus httpStatus = HttpStatus.INTERNAL_SERVER_ERROR;
         ApiException apiException = new ApiException("홀딩 기간에는 예약이 불가합니다. 예약을 원하시면 센터에 문의해주세요.", httpStatus, LocalDateTime.now());
+        return new ResponseEntity<>(apiException, httpStatus);
+    }
+    
+    @ExceptionHandler(value = ExpiredHoldingException.class)
+    public ResponseEntity<Object> ExpiredHoldingException(ExpiredHoldingException e) {
+        HttpStatus httpStatus = HttpStatus.INTERNAL_SERVER_ERROR;
+        ApiException apiException = new ApiException("사용할 수 있는 홀딩 일수를 초과하였습니다.", httpStatus, LocalDateTime.now());
         return new ResponseEntity<>(apiException, httpStatus);
     }
 

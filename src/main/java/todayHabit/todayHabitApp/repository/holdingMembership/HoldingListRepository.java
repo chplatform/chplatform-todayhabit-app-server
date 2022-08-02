@@ -4,12 +4,18 @@ import lombok.RequiredArgsConstructor;
 import org.apache.tomcat.jni.Local;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
+
+import todayHabit.todayHabitApp.domain.gym.Gym;
+import todayHabit.todayHabitApp.domain.gym.GymContainMember;
+import todayHabit.todayHabitApp.domain.holding.HoldingInfo;
 import todayHabit.todayHabitApp.domain.holding.HoldingList;
 import todayHabit.todayHabitApp.domain.holding.HoldingStatus;
+import todayHabit.todayHabitApp.domain.member.Member;
 
 import javax.persistence.EntityManager;
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 @RequiredArgsConstructor
@@ -36,13 +42,12 @@ public class HoldingListRepository {
         em.remove(holdingList);
     }
 
-    public List<HoldingList> findByMembershipIdAndStartDayAndEndDay(Long membershipId, LocalDate startDay, LocalDate endDay) {
-        return em.createNativeQuery("select * FROM holdingList hl " +
-                " left join holdingMembership hm on hl.holdingMembership_id = hm.holdingMembership_id " +
-                " where hl.member_membership_id = ? " +
-                " and hm.deleteValue != ?", HoldingList.class)
+    public List<HoldingInfo> findByMembershipIdAndStartDayAndEndDay(Long membershipId, LocalDate startDay, LocalDate endDay) {
+        return em.createNativeQuery("select * FROM holding_info hi " +
+                " where hi.member_membership_id = ? " +
+                " and hi.req_use != ?", HoldingInfo.class)
                 .setParameter(1, membershipId)
-                .setParameter(2, "취소")
+                .setParameter(2, "N")
                 .getResultList();
     }
 

@@ -46,20 +46,9 @@ public class MemberOwnMembershipsDto {
         this.weekAttend = memberOwnMembership.getWeekAttend();
         this.registerDate = memberOwnMembership.getRegisterDate();
         this.maxCountClass = memberOwnMembership.getMaxCountClass();
-//        this.available = memberOwnMembership.getAvailable();
-//        if (this.available != "notUse") {
-//            this.holdingStartDay = memberOwnMembership.getHoldingStartDay();
-//            this.holdingEndDay = memberOwnMembership.getHoldingEndDay();
-//        }
         this.membershipClassType = memberOwnMembership.getMembershipClassTypes().stream()
                 .map(membershipClassType -> new MembershipClassTypeDto(membershipClassType))
                 .collect(toList());
-//        this.holdingMembershipDtoList = memberOwnMembership.getHoldingMemberships().stream()
-//                .map(holdingMembership -> new HoldingMembershipDto(holdingMembership))
-//                .collect(toList());
-//        this.holdingList = memberOwnMembership.getHoldingList().stream()
-//                .map(holdingLists -> new HoldingListDto(holdingLists))
-//                .collect(toList());
         this.holdingInfo = memberOwnMembership.getHoldingInfo().stream()
                 .map(holdingLists -> new HoldingInfoDto(holdingLists))
                 .collect(toList());
@@ -127,10 +116,11 @@ public class MemberOwnMembershipsDto {
         private Long memberId;
         private String reqType;
         private String reqUse;
+        private String reqCancel;
         private LocalDate holdStartDay;
         private LocalDate holdEndDay;
-        private Long holdTotalPeriod;
-        private Long holdUsePeriod;
+        private int holdTotalPeriod;
+        private int holdUsePeriod;
         private String available;
         private String memo;
 
@@ -140,6 +130,7 @@ public class MemberOwnMembershipsDto {
 			this.memberId = holdingLists.getMemberId();
 			this.reqType = holdingLists.getReqType();
 			this.reqUse = holdingLists.getReqUse();
+			this.reqCancel = holdingLists.getReqCancel();
 			this.holdStartDay = holdingLists.getHoldStartDay();
 			this.holdEndDay = holdingLists.getHoldEndDay();
 			this.holdTotalPeriod = holdingLists.getHoldTotalPeriod();

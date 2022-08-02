@@ -30,13 +30,13 @@ public class HoldingController {
     @PostMapping("/hold/membership")
     public DefaultRes holdingMembership(@RequestBody HoldingDto request) throws Exception {
         return responseService.createDefaultResponse(holdingService.holdingMembership(
-                request.getMembershipId(), request.getHoldingMembershipId(), request.getStartDay(), request.getEndDay()));
+                request.getMembershipId(), request.getHoldingId(), request.getStartDay(), request.getEndDay(), request.getMemo()));
     }
 
     @PostMapping("/hold/membership/cancel")
     public DefaultRes cancelHoldingMembership(@RequestBody HoldingCancelDto request) throws Exception {
         return responseService.createDefaultResponse(holdingService.cancelHoldingMembership(request.getMembershipId(),
-                request.getHoldingMembershipId()));
+                request.getHoldingId()));
     }
 
     @Data
@@ -48,11 +48,12 @@ public class HoldingController {
         @NotNull
         private Long membershipId;
         @NotNull
-        private Long holdingMembershipId;
+        private Long holdingId;
         @NotNull
         private LocalDate startDay;
         @NotNull
         private LocalDate endDay;
+        private String memo; 
     }
 
     @Data
@@ -60,6 +61,6 @@ public class HoldingController {
         @NotNull
         private Long membershipId;
         @NotNull
-        private Long holdingMembershipId;
+        private Long holdingId;
     }
 }

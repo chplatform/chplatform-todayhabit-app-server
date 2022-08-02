@@ -2,7 +2,9 @@ package todayHabit.todayHabitApp.domain.holding;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
+import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
@@ -17,6 +19,7 @@ import java.util.List;
 @ToString
 @Entity
 @Getter
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Table(name = "holding_info")
 public class HoldingInfo {
 
@@ -44,6 +47,9 @@ public class HoldingInfo {
 	@Column(name = "req_use")
     private String reqUse;
 	
+	@Column(name = "req_cancel")
+	private String reqCancel;
+	
 	@Column(name = "hold_start_day")
     private LocalDate holdStartDay;
 	
@@ -51,10 +57,10 @@ public class HoldingInfo {
     private LocalDate holdEndDay;
 	
 	@Column(name = "hold_total_period")
-    private Long holdTotalPeriod;
+    private int holdTotalPeriod;
 	
 	@Column(name = "hold_use_period")
-    private Long holdUsePeriod;
+    private int holdUsePeriod;
 
     private String memo;
     
@@ -75,13 +81,10 @@ public class HoldingInfo {
             
         return "notFound";
     }
-	
-    protected HoldingInfo() {
 
-    }
-
+    @Builder
 	public HoldingInfo(Long holdingId, Gym gym, MemberOwnMembership memberOwnMembership, Long memberId, String reqType,
-			String reqUse, LocalDate holdStartDay, LocalDate holdEndDay, Long holdTotalPeriod, Long holdUsePeriod,
+			String reqUse, String reqCancel, LocalDate holdStartDay, LocalDate holdEndDay, int holdTotalPeriod, int holdUsePeriod,
 			String memo) {
 		this.holdingId = holdingId;
 		this.gym = gym;
@@ -89,6 +92,7 @@ public class HoldingInfo {
 		this.memberId = memberId;
 		this.reqType = reqType;
 		this.reqUse = reqUse;
+		this.reqCancel = reqCancel;
 		this.holdStartDay = holdStartDay;
 		this.holdEndDay = holdEndDay;
 		this.holdTotalPeriod = holdTotalPeriod;
@@ -96,8 +100,40 @@ public class HoldingInfo {
 		this.memo = memo;
 	}
 
+    // 홀딩 사용 여부 변경
+    public void updateReqType(String reqType) {
+        this.reqType = reqType;
+    }
 
-
+    // 홀딩 시작일 변경
+    public void updateHoldStartDay(LocalDate holdStartDay) {
+        this.holdStartDay = holdStartDay;
+    }
+    
+    // 홀딩 종료일 변경
+    public void updateHoldEndDay(LocalDate holdEndDay) {
+        this.holdEndDay = holdEndDay;
+    }
+    
+    // 홀딩 사용일수 변경
+    public void updateHoldUsePeriod(int holdUsePeriod) {
+        this.holdUsePeriod = holdUsePeriod;
+    }
+    
+    // 홀딩 사용구분 변경
+    public void updateReqUse(String reqUse) {
+        this.reqUse = reqUse;
+    }
+    
+    // 홀딩 취소 요청
+    public void updateReqCancel(String reqCancel) {
+        this.reqCancel = reqCancel;
+    }
+    
+    // 홀딩 사유 변경
+    public void updateMemo(String memo) {
+        this.memo = memo;
+    }
 
 
     

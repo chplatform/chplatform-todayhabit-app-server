@@ -8,6 +8,7 @@ import org.springframework.transaction.annotation.Transactional;
 import todayHabit.todayHabitApp.domain.ReserveBlock;
 import todayHabit.todayHabitApp.domain.WaitingMember;
 import todayHabit.todayHabitApp.domain.gym.Gym;
+import todayHabit.todayHabitApp.domain.holding.HoldingInfo;
 import todayHabit.todayHabitApp.domain.holding.HoldingList;
 import todayHabit.todayHabitApp.domain.member.Member;
 import todayHabit.todayHabitApp.domain.member.MemberClass;
@@ -85,8 +86,8 @@ public class ClassService {
         List<BigInteger> memberDayClassSize = memberClassRepository.findByMemberIdWithClassIdAndDay(memberId, membershipId, classInfo.getStartDay());
         List<BigInteger> memberWeekClassSize= memberClassRepository.findByMemberIdWithClassIdAndWeek(memberId, membershipId, classInfo.getStartDay());
         List<WaitingMember> waitingMemberList = waitingMemberRepository.findByMemberIdWithClassId(memberId, classId);
-        List<HoldingList> alreadyHoldingList = holdingListRepository.findByMembershipIdAndStartDayAndEndDay(membershipId, classInfo.getStartDay(), classInfo.getStartDay());
-        List<HoldingList> holdingListInWeb = holdingListRepository.findByHoldingMembershipIdZero(membershipId, classInfo.getStartDay(), classInfo.getStartDay());
+        List<HoldingInfo> alreadyHoldingList = holdingListRepository.findByMembershipIdAndStartDayAndEndDay(membershipId, classInfo.getStartDay(), classInfo.getStartDay());
+        
         LocalDateTime openTime = gymInfo.getOpenTime(classInfo.getStartDay());
         LocalDateTime reservableTime = LocalDateTime
                 .of(classInfo.getStartDay(), classInfo.getStartTime())
@@ -94,9 +95,7 @@ public class ClassService {
         if(openTime.isAfter(LocalDateTime.now())){ // 아직 예약 오픈 시점이 아닐 때
             throw new TimeoutOpenReserveException();
         }else if(alreadyHoldingList.size() > 0 ){
-            throw new HoldingException(alreadyHoldingList.get(0).getStartDay(), alreadyHoldingList.get(0).getEndDay(), alreadyHoldingList.get(0).getHoldingMembership().getId());
-        }else if(holdingListInWeb.size() > 0) {
-            throw new HoldingException(holdingListInWeb.get(0).getStartDay(),holdingListInWeb.get(0).getEndDay(), 0l);
+            throw new HoldingException(alreadyHoldingList.get(0).getHoldStartDay(), alreadyHoldingList.get(0).getHoldEndDay(), alreadyHoldingList.get(0).getHoldingId());
         }else if(membership.getStartDay().isAfter(classInfo.getStartDay()) || membership.getEndDay().isBefore(classInfo.getStartDay())){
             throw new OutOfRangeMembershipException();
         }else if (LocalDateTime.now().isAfter(reservableTime)) { // 현재 시간이 예약 가능 시간 보다 지났을 때 예약 불가능
