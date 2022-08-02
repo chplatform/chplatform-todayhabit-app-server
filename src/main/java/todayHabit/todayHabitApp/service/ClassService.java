@@ -87,16 +87,21 @@ public class ClassService {
         List<BigInteger> memberDayClassSize = memberClassRepository.findByMemberIdWithClassIdAndDay(memberId, membershipId, classInfo.getStartDay());
         List<BigInteger> memberWeekClassSize= memberClassRepository.findByMemberIdWithClassIdAndWeek(memberId, membershipId, classInfo.getStartDay());
         List<WaitingMember> waitingMemberList = waitingMemberRepository.findByMemberIdWithClassId(memberId, classId);
-        List<HoldingInfo> alreadyHoldingList = holdingListRepository.findByMembershipIdAndStartDayAndEndDay(membershipId, classInfo.getStartDay(), classInfo.getStartDay());
-        
+        List<HoldingInfo> alreadyHoldingInfo = holdingListRepository.findByMembershipIdAndStartDayAndEndDay(membershipId, classInfo.getStartDay(), classInfo.getStartDay());
         LocalDateTime openTime = gymInfo.getOpenTime(classInfo.getStartDay());
         LocalDateTime reservableTime = LocalDateTime
                 .of(classInfo.getStartDay(), classInfo.getStartTime())
                 .minusMinutes(gymInfo.getReservableTime());
         if(openTime.isAfter(LocalDateTime.now())){ // 아직 예약 오픈 시점이 아닐 때
             throw new TimeoutOpenReserveException();
-        }else if(!holdingService.checkHoldingPeriod(alreadyHoldingList,classInfo.getStartDay(),classInfo.getStartDay())){
-            throw new HoldingException(alreadyHoldingList.get(0).getHoldStartDay(), alreadyHoldingList.get(0).getHoldEndDay(), alreadyHoldingList.get(0).getHoldingId());
+        }else if(alreadyHoldingInfo.size() > 0){
+        	int statusCode = 500;
+        	if(alreadyHoldingInfo.get(0).getReqType().equals("admin")) {
+        		statusCode = 1300;
+        	}else if(alreadyHoldingInfo.get(0).getReqType().equals("default")) {
+        		statusCode = 1400;
+        	}
+            throw new HoldingException(alreadyHoldingInfo.get(0), statusCode);
         }else if(membership.getStartDay().isAfter(classInfo.getStartDay()) || membership.getEndDay().isBefore(classInfo.getStartDay())){
             throw new OutOfRangeMembershipException();
         }else if (LocalDateTime.now().isAfter(reservableTime)) { // 현재 시간이 예약 가능 시간 보다 지났을 때 예약 불가능

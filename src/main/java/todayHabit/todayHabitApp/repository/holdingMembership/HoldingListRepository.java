@@ -42,12 +42,27 @@ public class HoldingListRepository {
         em.remove(holdingList);
     }
 
-    public List<HoldingInfo> findByMembershipIdAndStartDayAndEndDay(Long membershipId, LocalDate startDay, LocalDate endDay) {
+    public List<HoldingInfo> findByMembershipId(Long membershipId, LocalDate startDay, LocalDate endDay) {
         return em.createNativeQuery("select * FROM holding_info hi " +
                 " where hi.member_membership_id = ? " +
                 " and hi.req_use != ?", HoldingInfo.class)
                 .setParameter(1, membershipId)
                 .setParameter(2, "N")
+                .getResultList();
+    }
+    
+    public List<HoldingInfo> findByMembershipIdAndStartDayAndEndDay(Long membershipId, LocalDate startDay, LocalDate endDay) {
+        return em.createNativeQuery("select * FROM holding_info hi " +
+                " where hi.member_membership_id = :membershipId " +
+                " and (" + 
+                "(hi.hold_start_day <= :startDay "+
+                "and hi.hold_end_day >= :startDay )"
+                +")" +
+                " and hi.req_use != :reqUse", HoldingInfo.class)
+                .setParameter("membershipId", membershipId)
+                .setParameter("startDay", startDay)
+                .setParameter("startDay", startDay)
+                .setParameter("reqUse", "N")
                 .getResultList();
     }
 

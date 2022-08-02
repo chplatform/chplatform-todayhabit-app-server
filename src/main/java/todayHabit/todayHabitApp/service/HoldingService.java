@@ -49,7 +49,7 @@ public class HoldingService {
          * 5. 홀딩 기간 만큼 회원권 증가
          * */
         MemberOwnMembership membershipInfo = memberOwnMembershipRepository.findByIdWithMemberOwnMembership(membershipId); 
-        List<HoldingInfo> alreadyHoldingList = holdingListRepository.findByMembershipIdAndStartDayAndEndDay(membershipId, startDay, endDay);
+        List<HoldingInfo> alreadyHoldingList = holdingListRepository.findByMembershipId(membershipId, startDay, endDay);
         HoldingInfo holdingMembership = holdingMembershipRepository.findById(holdingId);
         Period period = startDay.until(endDay);
         

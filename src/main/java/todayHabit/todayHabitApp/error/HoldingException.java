@@ -1,29 +1,29 @@
 package todayHabit.todayHabitApp.error;
 
 import java.time.LocalDate;
+import java.util.List;
+
+import todayHabit.todayHabitApp.domain.holding.HoldingInfo;
 
 
 public class HoldingException extends Exception {
-    private LocalDate startDay;
-    private LocalDate endDay;
-    private Long holdingId;
 
-    public HoldingException(LocalDate startDay, LocalDate endDay, Long holdingId) {
-        this.startDay = startDay;
-        this.endDay = endDay;
-        this.holdingId = holdingId;
-    }
+    private HoldingInfo holdingInfo;
+    private int resCode;
 
-    public LocalDate getStartDay() {
-        return startDay;
+    public HoldingException(HoldingInfo holdingInfo, int resCode) {
+        this.holdingInfo = holdingInfo;
+        this.resCode = resCode;
     }
+    
+	public HoldingInfo getHoldingInfo() {
+		return holdingInfo;
+	}
 
-    public LocalDate getEndDay() {
-        return endDay;
-    }
+	public int getResCode() {
+		return resCode;
+	}
+	
 
-    public Long getHoldingId() {
-        return holdingId;
-    }
 
 }
