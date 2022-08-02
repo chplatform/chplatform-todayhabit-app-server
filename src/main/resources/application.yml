@@ -30,7 +30,7 @@ server:
   config:
     activate:
       on-profile: "testdb"
-  port: 8000
+  port: 9000
   ssl:
     key-store: classpath:keystore.p12
     key-store-type: PKCS12
