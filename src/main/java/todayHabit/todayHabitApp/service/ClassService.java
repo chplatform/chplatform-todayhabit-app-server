@@ -49,6 +49,7 @@ public class ClassService {
     private final WaitingMemberRepository waitingMemberRepository;
     private final ClassHistoryRepository classHistoryRepository;
     private final HoldingListRepository holdingListRepository;
+    private final HoldingService holdingService;
 
     public ClassListDto getClassList(LocalDate date, Long gymId, Long membershipId) {
         List<ReserveBlock> reserveBlockList = reserveBlockRepository.findByMonthAndGymId(date, gymId);
@@ -94,7 +95,7 @@ public class ClassService {
                 .minusMinutes(gymInfo.getReservableTime());
         if(openTime.isAfter(LocalDateTime.now())){ // 아직 예약 오픈 시점이 아닐 때
             throw new TimeoutOpenReserveException();
-        }else if(alreadyHoldingList.size() > 0 ){
+        }else if(!holdingService.checkHoldingPeriod(alreadyHoldingList,classInfo.getStartDay(),classInfo.getStartDay())){
             throw new HoldingException(alreadyHoldingList.get(0).getHoldStartDay(), alreadyHoldingList.get(0).getHoldEndDay(), alreadyHoldingList.get(0).getHoldingId());
         }else if(membership.getStartDay().isAfter(classInfo.getStartDay()) || membership.getEndDay().isBefore(classInfo.getStartDay())){
             throw new OutOfRangeMembershipException();

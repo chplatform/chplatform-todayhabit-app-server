@@ -111,7 +111,7 @@ public class HoldingService {
         return "홀딩 취소가 완료되었습니다.";
     }
 
-    private boolean checkHoldingPeriod(List<HoldingInfo> alreadyHoldingList, LocalDate startDay, LocalDate endDay) {
+    public boolean checkHoldingPeriod(List<HoldingInfo> alreadyHoldingList, LocalDate startDay, LocalDate endDay) {
         for (HoldingInfo holdingList : alreadyHoldingList) {
             if((endDay.isAfter(holdingList.getHoldStartDay()) || endDay.isEqual(holdingList.getHoldEndDay()))
                     && (holdingList.getHoldEndDay().isAfter(startDay) || holdingList.getHoldEndDay().isEqual(startDay))){
