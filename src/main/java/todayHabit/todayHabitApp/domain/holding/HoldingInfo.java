@@ -72,14 +72,12 @@ public class HoldingInfo {
         if(this.getReqUse().equals("Y")) {
         	if(today.compareTo(this.getHoldEndDay()) > 0  || this.getReqCancel().equals("Y")) {
         		return "Expired"; //홀딩권 기간 만료
-        	} else if (today.compareTo(this.getHoldStartDay()) >= 0 && today.compareTo(this.getHoldEndDay()) <= 0) {
+        	} else {
                 return "use"; // 홀딩권 사용중
-            }
-        }else { // 홀딩권 미사용
+            } 
+        } else { // 홀딩권 미사용
         	return "notUse";
         }
-            
-        return "notFound";
     }
 
     @Builder
