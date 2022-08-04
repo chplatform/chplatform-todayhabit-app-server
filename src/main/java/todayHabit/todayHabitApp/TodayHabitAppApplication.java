@@ -12,15 +12,14 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 @EnableScheduling
 @SpringBootApplication
 public class TodayHabitAppApplication extends SpringBootServletInitializer{
+	
+	@Override
+	protected SpringApplicationBuilder configure(SpringApplicationBuilder builder) {
+		return builder.sources(TodayHabitAppApplication.class);
+	}
 
 	public static void main(String[] args) {
 		SpringApplication.run(TodayHabitAppApplication.class, args);
 	}
-	
-	@Override
-	protected SpringApplicationBuilder configure(SpringApplicationBuilder builder) {
-		return super.configure(builder);
-	}
-
 
 }

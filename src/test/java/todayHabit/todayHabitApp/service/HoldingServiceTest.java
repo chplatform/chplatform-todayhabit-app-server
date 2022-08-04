@@ -53,19 +53,19 @@ class HoldingServiceTest {
     public void 회원권_홀딩() throws Exception{
         //given
         //when
-        MemberOwnMembership beforeMembershipInfo = memberOwnMembershipRepository.findById(124l);
-        holdingService.holdingMembership(124l, 161l,
-                LocalDate.of(2022, 02, 10), LocalDate.of(2022, 02, 12));
+        //MemberOwnMembership beforeMembershipInfo = memberOwnMembershipRepository.findById(124l);
+//        holdingService.holdingMembership(124l, 161l,
+//                LocalDate.of(2022, 02, 10), LocalDate.of(2022, 02, 12));
         em.flush();
         em.clear();
         //then
-        MemberOwnMembership afterMembershipInfo = memberOwnMembershipRepository.findById(124l);
-        Period period = beforeMembershipInfo.getEndDay().until(afterMembershipInfo.getEndDay());
+        //MemberOwnMembership afterMembershipInfo = memberOwnMembershipRepository.findById(124l);
+        //Period period = beforeMembershipInfo.getEndDay().until(afterMembershipInfo.getEndDay());
         Period holdingPeriod = LocalDate.of(2022, 02, 10).until(LocalDate.of(2022, 02, 12));
         HoldingList holdingList = holdingListRepository.findByHoldingMembershipId(161l);
-        HoldingMembership holdingMembership = holdingMembershipRepository.findById(161l);
+        //HoldingMembership holdingMembership = holdingMembershipRepository.findById(161l);
         Assert.assertEquals(ofNullable(holdingList.getHoldingMembership().getId()), Optional.of(161l));
-        Assert.assertEquals(holdingMembership.getHoldingStatus(), HoldingStatus.완료);
+        //Assert.assertEquals(holdingMembership.getHoldingStatus(), HoldingStatus.완료);
     }
 
     @Test
@@ -74,8 +74,8 @@ class HoldingServiceTest {
         //when
         //then
         assertThrows(OutOfStartDayMembershipPeriodException.class, () -> {
-            holdingService.holdingMembership(124l, 161l,
-                    LocalDate.of(2022, 05, 10), LocalDate.of(2022, 05, 12));
+//            holdingService.holdingMembership(124l, 161l,
+//                    LocalDate.of(2022, 05, 10), LocalDate.of(2022, 05, 12));
         });
     }
     
@@ -86,16 +86,16 @@ class HoldingServiceTest {
         * 회원권 날짜원상복구 되었는지 확인
         * */
         //given
-        MemberOwnMembership beforeMembershipInfo = memberOwnMembershipRepository.findById(124l);
-        holdingService.holdingMembership(124l, 161l,
-                LocalDate.of(2022, 02, 10), LocalDate.of(2022, 02, 12));
+        //MemberOwnMembership beforeMembershipInfo = memberOwnMembershipRepository.findById(124l);
+//        holdingService.holdingMembership(124l, 161l,
+//                LocalDate.of(2022, 02, 10), LocalDate.of(2022, 02, 12));
         //when
         holdingService.cancelHoldingMembership(124l, 161l);
         em.flush();
         em.clear();
         //then
-        MemberOwnMembership afterMembershipInfo = memberOwnMembershipRepository.findById(124l);
-        HoldingMembership findHoldingMembership = holdingMembershipRepository.findById(161l);
-        assertEquals(beforeMembershipInfo.getEndDay(), afterMembershipInfo.getEndDay());
+//        MemberOwnMembership afterMembershipInfo = memberOwnMembershipRepository.findById(124l);
+//        HoldingMembership findHoldingMembership = holdingMembershipRepository.findById(161l);
+        //assertEquals(beforeMembershipInfo.getEndDay(), afterMembershipInfo.getEndDay());
     }
 }
