@@ -55,7 +55,7 @@ public class HoldingService {
         
         if (!holdingMembership.getReqUse().equals("N")) {
             throw new AlreadyUsingHoldingException();
-        } else if(holdingMembership.getHoldUsePeriod() + (period.getDays() + 1) >= holdingMembership.getHoldTotalPeriod()) {
+        } else if(holdingMembership.getHoldUsePeriod() + (period.getDays() + 1) > holdingMembership.getHoldTotalPeriod()) {
         	throw new ExpireMemberException();
         } else if (!checkHoldingPeriod(alreadyHoldingList, startDay, endDay)) {
             throw new AlreadyHoldingException();
