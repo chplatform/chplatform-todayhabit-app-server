@@ -109,6 +109,7 @@ public class HoldingService {
         	holdingInfo.updateReqCancel("Y");
         	holdingInfo.updateUpdateDate(today);
         	holdingInfo.updateCancelDate(today);
+        	holdingInfo.updateHoldEndDay(today);
         };
             
         return "홀딩 취소가 완료되었습니다.";
