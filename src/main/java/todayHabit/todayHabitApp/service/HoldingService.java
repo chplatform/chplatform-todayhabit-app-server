@@ -56,7 +56,7 @@ public class HoldingService {
         if (!holdingMembership.getReqUse().equals("N")) {
             throw new AlreadyUsingHoldingException();
         } else if(holdingMembership.getHoldUsePeriod() + (period.getDays() + 1) > holdingMembership.getHoldTotalPeriod()) {
-        	throw new ExpireMemberException();
+        	throw new ExpiredHoldingException();
         } else if (!checkHoldingPeriod(alreadyHoldingList, startDay, endDay)) {
             throw new AlreadyHoldingException();
         } else if (startDay.isAfter(membershipInfo.getEndDay())) {
@@ -88,7 +88,7 @@ public class HoldingService {
         Period period;
         int decrePeriod = 0;
         
-        if (holdingInfo.getHoldStartDay().isAfter(today) || !holdingInfo.getHoldStartDay().isEqual(today)) {
+        if (holdingInfo.getHoldStartDay().isAfter(today) && !holdingInfo.getHoldStartDay().isEqual(today)) {
             period = holdingInfo.getHoldStartDay().until(holdingInfo.getHoldEndDay());
             decrePeriod = period.getDays()+1;
         }else{
