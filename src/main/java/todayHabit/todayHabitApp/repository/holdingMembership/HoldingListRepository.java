@@ -45,9 +45,11 @@ public class HoldingListRepository {
     public List<HoldingInfo> findByMembershipId(Long membershipId, LocalDate startDay, LocalDate endDay) {
         return em.createNativeQuery("select * FROM holding_info hi " +
                 " where hi.member_membership_id = ? " +
-                " and hi.req_use != ?", HoldingInfo.class)
+                " and hi.req_use != ?" + 
+                " and hi.req_cancel != ?" , HoldingInfo.class)
                 .setParameter(1, membershipId)
                 .setParameter(2, "N")
+                .setParameter(3, "Y")
                 .getResultList();
     }
     
