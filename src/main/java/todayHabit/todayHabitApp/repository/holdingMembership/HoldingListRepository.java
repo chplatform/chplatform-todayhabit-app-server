@@ -58,11 +58,13 @@ public class HoldingListRepository {
                 "(hi.hold_start_day <= :startDay "+
                 "and hi.hold_end_day >= :startDay )"
                 +")" +
-                " and hi.req_use != :reqUse", HoldingInfo.class)
+                " and hi.req_use != :reqUse" + 
+                " and hi.req_cancel != :reqCancel", HoldingInfo.class)
                 .setParameter("membershipId", membershipId)
                 .setParameter("startDay", startDay)
                 .setParameter("startDay", startDay)
                 .setParameter("reqUse", "N")
+                .setParameter("reqCancel", "Y")
                 .getResultList();
     }
 
