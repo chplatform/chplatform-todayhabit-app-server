@@ -99,6 +99,9 @@ public class HoldingInfo {
                     period = this.getHoldStartDay().until(this.getCancelDate());
                     result = period.getDays() + 1;
         		}
+        		if(this.getHoldStartDay().isEqual(this.getCancelDate())) {
+        			result = 0;
+        		}
         	}else if(today.compareTo(this.getHoldEndDay()) > 0) { // 만료
                 period = this.getHoldStartDay().until(this.getHoldEndDay());
                 result = period.getDays() + 1;
