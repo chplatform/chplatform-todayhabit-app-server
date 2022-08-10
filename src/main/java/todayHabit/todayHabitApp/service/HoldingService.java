@@ -93,7 +93,7 @@ public class HoldingService {
             decrePeriod = period.getDays()+1;
         }else{
             period = today.until(holdingInfo.getHoldEndDay());
-            decrePeriod = period.getDays();
+            decrePeriod = period.getDays()+1;
         }
         membershipInfo.decreaseMembershipEndDay(decrePeriod);
 
