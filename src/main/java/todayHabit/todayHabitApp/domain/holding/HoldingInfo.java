@@ -13,6 +13,7 @@ import todayHabit.todayHabitApp.domain.member.MemberOwnMembership;
 
 import javax.persistence.*;
 import java.time.LocalDate;
+import java.time.Period;
 import java.util.List;
 
 
@@ -61,6 +62,12 @@ public class HoldingInfo {
 	
 	@Column(name = "hold_use_period")
     private int holdUsePeriod;
+	
+	@Column(name = "update_date")
+    private LocalDate updateDate;
+	
+	@Column(name = "cancel_date")
+    private LocalDate cancelDate;
 
     private String memo;
     
@@ -79,11 +86,41 @@ public class HoldingInfo {
         	return "notUse";
         }
     }
+    
+    public int getRealUseHoldPeriod() {
+        LocalDate today = LocalDate.now();
+        int result = 0;
+        if(this.getReqUse().equals("Y")) {
+            Period period;
+        	if(this.getReqCancel().equals("Y")) { // 취소
+        		if(this.getHoldStartDay().isEqual(today) 
+        				|| this.getHoldEndDay().isEqual(today) 
+        				|| (this.getHoldStartDay().isBefore(today) && this.getHoldEndDay().isAfter(today))) {
+                    period = this.getHoldStartDay().until(this.getCancelDate());
+                    result = period.getDays() + 1;
+        		}
+        	}else if(today.compareTo(this.getHoldEndDay()) > 0) { // 만료
+                period = this.getHoldStartDay().until(this.getHoldEndDay());
+                result = period.getDays() + 1;
+        	}else { // 사용중
+        		if(this.getHoldStartDay().isEqual(today) 
+        				|| this.getHoldEndDay().isEqual(today) 
+        				|| (this.getHoldStartDay().isBefore(today) && this.getHoldEndDay().isAfter(today))) {
+                    // 홀딩 시작일 - today
+                    period = this.getHoldStartDay().until(today);
+                    result = period.getDays() + 1;
+        			
+        		}
+
+        	}
+        }
+		return result;
+    }
 
     @Builder
 	public HoldingInfo(Long holdingId, Gym gym, MemberOwnMembership memberOwnMembership, Long memberId, String reqType,
 			String reqUse, String reqCancel, LocalDate holdStartDay, LocalDate holdEndDay, int holdTotalPeriod, int holdUsePeriod,
-			String memo) {
+			String memo, LocalDate updateDate, LocalDate cancelDate) {
 		this.holdingId = holdingId;
 		this.gym = gym;
 		this.memberOwnMembership = memberOwnMembership;
@@ -96,6 +133,8 @@ public class HoldingInfo {
 		this.holdTotalPeriod = holdTotalPeriod;
 		this.holdUsePeriod = holdUsePeriod;
 		this.memo = memo;
+		this.updateDate = updateDate;
+		this.cancelDate = cancelDate;
 	}
 
     // 홀딩 사용 여부 변경
@@ -131,6 +170,16 @@ public class HoldingInfo {
     // 홀딩 사유 변경
     public void updateMemo(String memo) {
         this.memo = memo;
+    }
+    
+    // 수정 변경
+    public void updateUpdateDate(LocalDate updateDate) {
+        this.updateDate = updateDate;
+    }
+    
+    // 취소일 변경
+    public void updateCancelDate(LocalDate cancelDate) {
+        this.cancelDate = cancelDate;
     }
 
 

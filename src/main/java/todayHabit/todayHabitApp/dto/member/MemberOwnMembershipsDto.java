@@ -122,7 +122,10 @@ public class MemberOwnMembershipsDto {
         private int holdTotalPeriod;
         private int holdUsePeriod;
         private String available;
+        private int realUseHoldPeriod;
         private String memo;
+        private LocalDate updateDate;
+        private LocalDate cancelDate;
 
 		public HoldingInfoDto(HoldingInfo holdingLists) {
 			this.holdingId = holdingLists.getHoldingId();
@@ -135,8 +138,11 @@ public class MemberOwnMembershipsDto {
 			this.holdEndDay = holdingLists.getHoldEndDay();
 			this.holdTotalPeriod = holdingLists.getHoldTotalPeriod();
 			this.holdUsePeriod = holdingLists.getHoldUsePeriod();
-			this.memo = memo;
+			this.memo = holdingLists.getMemo();
 	        this.available = holdingLists.getAvailable();
+	        this.realUseHoldPeriod = holdingLists.getRealUseHoldPeriod();
+	        this.updateDate = holdingLists.getUpdateDate();
+	        this.cancelDate = holdingLists.getCancelDate();
 		}
 
 
