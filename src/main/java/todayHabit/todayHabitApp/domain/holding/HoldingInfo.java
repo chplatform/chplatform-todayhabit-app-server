@@ -93,12 +93,8 @@ public class HoldingInfo {
         if(this.getReqUse().equals("Y")) {
             Period period;
         	if(this.getReqCancel().equals("Y")) { // 취소
-        		if(this.getHoldStartDay().isEqual(today) 
-        				|| this.getHoldEndDay().isEqual(today) 
-        				|| (this.getHoldStartDay().isBefore(today) && this.getHoldEndDay().isAfter(today))) {
-                    period = this.getHoldStartDay().until(this.getCancelDate());
-                    result = period.getDays();
-        		}
+        		period = this.getHoldStartDay().until(this.getCancelDate());
+        		result = period.getDays();
         	}else if(today.compareTo(this.getHoldEndDay()) > 0) { // 만료
                 period = this.getHoldStartDay().until(this.getHoldEndDay());
                 result = period.getDays();
