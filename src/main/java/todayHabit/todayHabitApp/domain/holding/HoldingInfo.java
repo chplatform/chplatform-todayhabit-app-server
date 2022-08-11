@@ -97,21 +97,18 @@ public class HoldingInfo {
         				|| this.getHoldEndDay().isEqual(today) 
         				|| (this.getHoldStartDay().isBefore(today) && this.getHoldEndDay().isAfter(today))) {
                     period = this.getHoldStartDay().until(this.getCancelDate());
-                    result = period.getDays() + 1;
-        		}
-        		if(this.getHoldStartDay().isEqual(this.getCancelDate())) {
-        			result = 0;
+                    result = period.getDays();
         		}
         	}else if(today.compareTo(this.getHoldEndDay()) > 0) { // 만료
                 period = this.getHoldStartDay().until(this.getHoldEndDay());
-                result = period.getDays() + 1;
+                result = period.getDays();
         	}else { // 사용중
         		if(this.getHoldStartDay().isEqual(today) 
         				|| this.getHoldEndDay().isEqual(today) 
         				|| (this.getHoldStartDay().isBefore(today) && this.getHoldEndDay().isAfter(today))) {
                     // 홀딩 시작일 - today
                     period = this.getHoldStartDay().until(today);
-                    result = period.getDays() + 1;
+                    result = period.getDays();
         			
         		}
 
