@@ -3,6 +3,7 @@ package todayHabit.todayHabitApp.repository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 import todayHabit.todayHabitApp.domain.WaitingMember;
+import todayHabit.todayHabitApp.domain.member.MemberClass;
 
 import javax.persistence.EntityManager;
 
@@ -36,6 +37,19 @@ public class WaitingMemberRepository {
                 .setParameter("classId", classId)
                 .getResultList();
     }
+    
+    public List<WaitingMember> findBetweenDate(Long gymId, LocalDate startDay, LocalDate endDay, Long membershipId) {
+        return em.createQuery("select wm from WaitingMember wm " +
+                        " join fetch wm.schedule s " +
+                        " join wm.memberOwnMembership mom " +
+                        " where mom.id = :membershipId " +
+                        " and s.startDay between :startDay and :endDay ", WaitingMember.class)
+                .setParameter("membershipId", membershipId)
+                .setParameter("startDay", startDay)
+                .setParameter("endDay", endDay)
+                .getResultList();
+    }
+    
     public List<WaitingMember> findByClassId(Long classId) {
         return em.createQuery("select w from WaitingMember w " +
                         " join w.member m " +

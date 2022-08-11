@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import todayHabit.todayHabitApp.domain.WaitingMember;
 import todayHabit.todayHabitApp.domain.holding.HoldingInfo;
 import todayHabit.todayHabitApp.domain.holding.HoldingList;
 import todayHabit.todayHabitApp.domain.holding.HoldingLocation;
@@ -14,6 +15,7 @@ import todayHabit.todayHabitApp.domain.member.MemberClass;
 import todayHabit.todayHabitApp.domain.member.MemberOwnMembership;
 import todayHabit.todayHabitApp.dto.member.MemberOwnMembershipsDto;
 import todayHabit.todayHabitApp.error.*;
+import todayHabit.todayHabitApp.repository.WaitingMemberRepository;
 import todayHabit.todayHabitApp.repository.holdingMembership.HoldingListRepository;
 import todayHabit.todayHabitApp.repository.holdingMembership.HoldingMembershipRepository;
 import todayHabit.todayHabitApp.repository.member.MemberClassRepository;
@@ -31,11 +33,13 @@ public class HoldingService {
     private final MemberOwnMembershipRepository memberOwnMembershipRepository;
     private final HoldingMembershipRepository holdingMembershipRepository;
     private final HoldingListRepository holdingListRepository;
+    private final WaitingMemberRepository waitingMemberRepository;
+    
 
     public int checkHoldingMembership(Long gymId, Long membershipId, LocalDate startDay, LocalDate endDay) {
-    	// 홀딩권 req_period 기간만큼 회원권 종료일 수정
-        List<MemberClass> classList = memberClassRepository.findBetweenDate(gymId, startDay, endDay, membershipId);
-        return classList.size();
+        int classCount = memberClassRepository.findBetweenDate(gymId, startDay, endDay, membershipId).size();
+        int waitClassCount= waitingMemberRepository.findBetweenDate(gymId, startDay, endDay, membershipId).size();
+        return classCount + waitClassCount;
     }
 
     @Transactional
