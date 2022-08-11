@@ -79,7 +79,7 @@ public class HoldingService {
         * 1. 남은 일수만큼 회원권 일 감소
         * 2. 사용안된 홀딩권일 때 홀딩 시작일 부터
         * 3. 사용중인 홀딩권일 때 오늘 날짜 부터
-        * 4. 홀딩 신청 기간이 회원권 시작 전 일 경우 다시 사용가능하도록 초기화.
+        * 4. 홀딩 취소시 회원권 시작 전 일 경우 다시 사용가능하도록 초기화.
         * 5. 홀딩 기간이 남아도 만료 처리
         * */
     	LocalDate today = LocalDate.now();
@@ -97,8 +97,7 @@ public class HoldingService {
         }
         membershipInfo.decreaseMembershipEndDay(decrePeriod);
 
-        if(holdingInfo.getHoldStartDay().isBefore(membershipInfo.getStartDay())
-        		|| !holdingInfo.getHoldStartDay().isEqual(today)) {
+        if(today.isBefore(membershipInfo.getStartDay())) {
         	holdingInfo.updateHoldStartDay(null);
         	holdingInfo.updateHoldEndDay(null);
         	holdingInfo.updateHoldUsePeriod(0);
