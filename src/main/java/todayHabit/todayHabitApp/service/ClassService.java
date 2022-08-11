@@ -85,13 +85,19 @@ public class ClassService {
         MemberOwnMembership membership = memberOwnMembershipRepository.findByIdWithMemberOwnMembership(membershipId);
         List<MemberClass> memberClassList = memberClassRepository.findByMemberIdWithClassId(memberId, classId);
         List<BigInteger> memberDayClassSize = memberClassRepository.findByMemberIdWithClassIdAndDay(memberId, membershipId, classInfo.getStartDay());
+        List<BigInteger> waitngMemberDayClassSize = waitingMemberRepository.findByMemberIdWithClassIdAndDay(memberId, membershipId, classInfo.getStartDay());
         List<BigInteger> memberWeekClassSize= memberClassRepository.findByMemberIdWithClassIdAndWeek(memberId, membershipId, classInfo.getStartDay());
+        List<BigInteger> watingMemberWeekClassSize= memberClassRepository.findByMemberIdWithClassIdAndWeek(memberId, membershipId, classInfo.getStartDay());
         List<WaitingMember> waitingMemberList = waitingMemberRepository.findByMemberIdWithClassId(memberId, classId);
         List<HoldingInfo> alreadyHoldingInfo = holdingListRepository.findByMembershipIdAndStartDayAndEndDay(membershipId, classInfo.getStartDay(), classInfo.getStartDay());
         LocalDateTime openTime = gymInfo.getOpenTime(classInfo.getStartDay());
         LocalDateTime reservableTime = LocalDateTime
                 .of(classInfo.getStartDay(), classInfo.getStartTime())
                 .minusMinutes(gymInfo.getReservableTime());
+        
+        int dayClassSize = Integer.parseInt(String.valueOf(memberDayClassSize.get(0))) + Integer.parseInt(String.valueOf(waitngMemberDayClassSize.get(0)));
+        int weekClassSize = Integer.parseInt(String.valueOf(memberWeekClassSize.get(0))) + Integer.parseInt(String.valueOf(watingMemberWeekClassSize.get(0)));
+        
         if(openTime.isAfter(LocalDateTime.now())){ // 아직 예약 오픈 시점이 아닐 때
             throw new TimeoutOpenReserveException();
         }else if(alreadyHoldingInfo.size() > 0){
@@ -108,9 +114,9 @@ public class ClassService {
             throw new TimeoutReserveException();
         }else if (membership.getMaxCountClass() < (membership.getCountClass()+classInfo.getDecrease())) { // 회원권이 모자를 때
             throw new NotEnoughMembershipException();
-        }else if(membership.getMembership().getMaxDayAttend() < Integer.parseInt(String.valueOf(memberDayClassSize.get(0))) + classInfo.getDecrease()) { //
+        }else if(membership.getMembership().getMaxDayAttend() < dayClassSize + classInfo.getDecrease()) {
             throw new OverDayAttendException();
-        }else if(membership.getMembership().getMaxWeekAttend() < Integer.parseInt(String.valueOf(memberWeekClassSize.get(0))) + classInfo.getDecrease()) {
+        }else if(membership.getMembership().getMaxWeekAttend() < weekClassSize + classInfo.getDecrease()) {
             throw new OverWeekAttendException();
         }else if(!memberClassList.isEmpty() || !waitingMemberList.isEmpty()) { // 이미 예약된 회원일 때
             throw new AlreadyReserveClassException();

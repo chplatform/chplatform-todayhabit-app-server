@@ -5,6 +5,8 @@ import org.springframework.stereotype.Repository;
 import todayHabit.todayHabitApp.domain.WaitingMember;
 
 import javax.persistence.EntityManager;
+
+import java.math.BigInteger;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.List;
@@ -120,4 +122,29 @@ public class WaitingMemberRepository {
                 .setParameter("membershipId", membershipId)
                 .getResultList();
     }
+    
+    public List<BigInteger> findByMemberIdWithClassIdAndDay(Long memberId, Long membershipId, LocalDate startDay) {
+        return em.createNativeQuery("select coalesce(sum(c.decrease),0) from waitingMember wm" +
+                        " join class c on wm.class_id = c.class_id" +
+                        " where date_format(c.startDay, '%y-%m-%d') = date_format(?, '%y-%m-%d')" +
+                        " and wm.member_id = ?" +
+                        " and wm.member_membership_id = ?")
+                .setParameter(1, startDay)
+                .setParameter(2, memberId)
+                .setParameter(3, membershipId)
+                .getResultList();
+    }
+    
+    public List<BigInteger>  findByMemberIdWithClassIdAndWeek(Long memberId, Long membershipId, LocalDate startDay) {
+        return em.createNativeQuery("select coalesce(sum(c.decrease),0) from waitingMember wm" +
+                        " join class c on mc.class_id = c.class_id" +
+                        " where week(c.startDay) = week(?)" +
+                        " and wm.member_id = ?" +
+                        " and wm.member_membership_id = ?")
+                .setParameter(1, startDay)
+                .setParameter(2, memberId)
+                .setParameter(3, membershipId)
+                .getResultList();
+    }
+    
 }
