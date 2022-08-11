@@ -87,7 +87,7 @@ public class ClassService {
         List<BigInteger> memberDayClassSize = memberClassRepository.findByMemberIdWithClassIdAndDay(memberId, membershipId, classInfo.getStartDay());
         List<BigInteger> waitngMemberDayClassSize = waitingMemberRepository.findByMemberIdWithClassIdAndDay(memberId, membershipId, classInfo.getStartDay());
         List<BigInteger> memberWeekClassSize= memberClassRepository.findByMemberIdWithClassIdAndWeek(memberId, membershipId, classInfo.getStartDay());
-        List<BigInteger> watingMemberWeekClassSize= memberClassRepository.findByMemberIdWithClassIdAndWeek(memberId, membershipId, classInfo.getStartDay());
+        List<BigInteger> watingMemberWeekClassSize= waitingMemberRepository.findByMemberIdWithClassIdAndWeek(memberId, membershipId, classInfo.getStartDay());
         List<WaitingMember> waitingMemberList = waitingMemberRepository.findByMemberIdWithClassId(memberId, classId);
         List<HoldingInfo> alreadyHoldingInfo = holdingListRepository.findByMembershipIdAndStartDayAndEndDay(membershipId, classInfo.getStartDay(), classInfo.getStartDay());
         LocalDateTime openTime = gymInfo.getOpenTime(classInfo.getStartDay());

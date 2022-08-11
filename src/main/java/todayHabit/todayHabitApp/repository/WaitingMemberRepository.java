@@ -137,7 +137,7 @@ public class WaitingMemberRepository {
     
     public List<BigInteger>  findByMemberIdWithClassIdAndWeek(Long memberId, Long membershipId, LocalDate startDay) {
         return em.createNativeQuery("select coalesce(sum(c.decrease),0) from waitingMember wm" +
-                        " join class c on mc.class_id = c.class_id" +
+                        " join class c on wm.class_id = c.class_id" +
                         " where week(c.startDay) = week(?)" +
                         " and wm.member_id = ?" +
                         " and wm.member_membership_id = ?")
