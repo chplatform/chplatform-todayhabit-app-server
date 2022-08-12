@@ -101,7 +101,7 @@ public class HoldingService {
         }
         membershipInfo.decreaseMembershipEndDay(decrePeriod);
 
-        if(today.isBefore(membershipInfo.getStartDay())) {
+        if(today.isBefore(holdingInfo.getHoldStartDay())) {
         	holdingInfo.updateHoldStartDay(null);
         	holdingInfo.updateHoldEndDay(null);
         	holdingInfo.updateHoldUsePeriod(0);
