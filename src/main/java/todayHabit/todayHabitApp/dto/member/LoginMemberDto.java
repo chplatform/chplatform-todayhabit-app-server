@@ -31,6 +31,7 @@ public class LoginMemberDto {
     private String birth;
     private Male male;
     private String phone;
+    private int point;
     private List<gymListDto> gymList;
 
     public LoginMemberDto(Member member, Map<Long, Long> gymMembershipCountDto) {
@@ -40,6 +41,7 @@ public class LoginMemberDto {
         this.birth = member.getBirth();
         this.male = member.getMale();
         this.phone = member.getPhone();
+        this.point = member.getPoint();
         this.gymList = member.getGymList().stream()
                 .map(gymList -> new gymListDto(gymList.getGym(), gymList.getBookmark(), gymList.getApprove(), gymMembershipCountDto))
                 .collect(toList());

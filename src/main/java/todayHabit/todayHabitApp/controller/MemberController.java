@@ -2,7 +2,6 @@ package todayHabit.todayHabitApp.controller;
 
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
-import org.jetbrains.annotations.NotNull;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -25,6 +24,8 @@ import javax.validation.ValidationException;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
+
 import java.util.Optional;
 import java.util.regex.Pattern;
 
