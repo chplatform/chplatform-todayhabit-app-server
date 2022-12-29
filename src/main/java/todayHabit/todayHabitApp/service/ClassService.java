@@ -5,6 +5,9 @@ import org.springframework.scheduling.annotation.Async;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import com.google.firebase.messaging.FirebaseMessagingException;
+
 import todayHabit.todayHabitApp.domain.ReserveBlock;
 import todayHabit.todayHabitApp.domain.WaitingMember;
 import todayHabit.todayHabitApp.domain.gym.Gym;
@@ -42,6 +45,7 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
 public class ClassService {
+	 private final FirebaseMessageService firebaseMessageService;
     private final MemberRepository memberRepository;
     private final ClassRepository classRepository;
     private final MemberOwnMembershipRepository memberOwnMembershipRepository;
@@ -252,6 +256,12 @@ public class ClassService {
             				.insert_date(LocalDateTime.now())
             				.build()
             				.toEntity());
+            		
+            		try {
+						firebaseMessageService.sendToToken(gymInfo.getId(), waitMemberInfo.getId(), " 센터 수업 예약", "수업이 예약되었습니다.");
+					} catch (FirebaseMessagingException e) {
+						e.printStackTrace();
+					}
             		
                 }else{
                     waitingMember.changeWaitingNumber();
