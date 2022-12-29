@@ -258,7 +258,7 @@ public class ClassService {
             				.toEntity());
             		
             		try {
-						firebaseMessageService.sendToToken(gymInfo.getId(), waitMemberInfo.getId(), " 센터 수업 예약", "대기하신 수업이 예약되었습니다.");
+						firebaseMessageService.sendToToken(gymInfo.getId(), waitMemberInfo.getId(), " 센터 수업 예약", "수업이 예약되었습니다.");
 					} catch (FirebaseMessagingException e) {
 						e.printStackTrace();
 					}
