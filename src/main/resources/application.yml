@@ -12,9 +12,9 @@ spring:
     activate:
       on-profile: "testdb"
   datasource:
-    url: jdbc:mysql://db-av6j1.pub-cdb.ntruss.com/GH-CRM
-    username: bookinghabit
-    password: bookinghabit1234!
+    url: jdbc:mysql://db-backoffice.cztvak4u5bvz.ap-northeast-2.rds.amazonaws.com:3306/GH-CRM
+    username: ghptadmin
+    password: qwER1234
     driver-class-name: com.mysql.cj.jdbc.Driver
 
   jpa:
